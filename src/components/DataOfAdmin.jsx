@@ -232,10 +232,10 @@ const DataOfAdmin = () => {
         {/* Next */}
         <button
           onClick={handleNext}
-          disabled={page === totalPages - 1}
+          disabled={page >= totalPages - 1}
           className={`px-4 py-1.5  rounded-md cursor-pointer text-sm font-medium transition
       ${
-        page === totalPages - 1
+        page >= totalPages - 1
           ? "bg-gray-200 text-gray-400 cursor-not-allowed"
           : "bg-gray-100 text-gray-700 cursor-pointer hover:bg-gray-200"
       }
