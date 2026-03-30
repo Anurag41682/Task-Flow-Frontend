@@ -30,15 +30,9 @@ const SetPassword = () => {
     setError("");
 
     axios
-      .post(
-        `${baseURL}/api/auth/set-password?token=${token}`,
-        {
-          newPassword: password,
-        },
-        {
-          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-        },
-      )
+      .post(`${baseURL}/api/auth/set-password?token=${token}`, {
+        newPassword: password,
+      })
       .then((res) => {
         console.log(res);
         setError("");
