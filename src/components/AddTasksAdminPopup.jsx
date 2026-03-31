@@ -37,12 +37,20 @@ const AddTaskAdminPopup = ({
   const handleSubmit = async () => {
     try {
       if (isEdit) {
-        await axios.patch(`${baseURL}/api/tasks/${editTaskId}`, {
-          title,
-          description,
-          dueDate,
-          userId: taskUserId,
-        });
+        await axios.patch(
+          `${baseURL}/api/tasks/${editTaskId}`,
+          {
+            title,
+            description,
+            dueDate,
+            userId: taskUserId,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          },
+        );
         setSuccess("Task updated!");
         setError("");
         setTimeout(() => {
