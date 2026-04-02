@@ -4,6 +4,7 @@ import { useState } from "react";
 const baseURL = import.meta.env.VITE_BASE_URL;
 
 const AddTaskAdminPopup = ({
+  fetchTasks,
   setAddTaskPopup,
   users,
   taskUserId,
@@ -51,6 +52,7 @@ const AddTaskAdminPopup = ({
             },
           },
         );
+        fetchTasks();
         setSuccess("Task updated!");
         setError("");
         setTimeout(() => {
@@ -71,6 +73,7 @@ const AddTaskAdminPopup = ({
             },
           },
         );
+        fetchTasks();
         setSuccess("Task created!");
         setError("");
         setTimeout(() => {

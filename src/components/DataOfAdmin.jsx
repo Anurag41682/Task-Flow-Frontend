@@ -247,6 +247,7 @@ const DataOfAdmin = () => {
       {addUserPopup && <AddUserPopup setAddUserPopup={setAddUserPopup} />}
       {addTaskPopup && (
         <AddTaskAdminPopup
+          fetchTasks={fetchTasks}
           title={title}
           description={description}
           dueDate={dueDate}
