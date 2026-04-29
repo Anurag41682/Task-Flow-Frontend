@@ -1,2 +1,2 @@
 # Task Flow Frontend
-#### Frontend for Task Flow application for Managing Task in multiUser enviornment with different roles access so that Users can easily assign and complete task without much clutter
+#### Frontend for Task Flow application for Managing Task in multiUser environment with different roles access so that Users can easily assign and complete task without much clutter
