@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 const baseURL = import.meta.env.VITE_BASE_URL;
+
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -28,12 +29,22 @@ const Login = () => {
       localStorage.setItem("userId", res.data.userId);
       localStorage.setItem("role", res.data.role);
       navigate("/home");
-      // console.log(res.data);
     } catch (err) {
       console.log(err);
       console.log(err?.response);
       setError(err?.response?.data?.message);
     }
+  };
+
+  const fillDemoCredentials = (role) => {
+    if (role === "admin") {
+      setEmail("admin@taskflow.com");
+      setPassword("admin123");
+    } else {
+      setEmail("user@taskflow.com");
+      setPassword("user123");
+    }
+    setError("");
   };
 
   return (
@@ -43,7 +54,6 @@ const Login = () => {
           <h1 className="text-2xl font-semibold text-center text-gray-800 mb-6">
             Welcome to TaskFlow
           </h1>
-
           <form>
             <div className="flex flex-col gap-4">
               {/* Email */}
@@ -58,7 +68,6 @@ const Login = () => {
                   name="email"
                 />
               </div>
-
               {/* Password */}
               <div className="flex flex-col gap-1">
                 <label className="text-sm text-gray-600">Password</label>
@@ -72,9 +81,7 @@ const Login = () => {
                   name="password"
                 />
               </div>
-
               {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
-
               {/* Button */}
               <button
                 type="button"
@@ -87,6 +94,36 @@ const Login = () => {
               </button>
             </div>
           </form>
+
+          {/* Demo Credentials Section */}
+          <div className="mt-6 pt-6 border-t border-gray-200">
+            <p className="text-sm font-semibold text-gray-700 mb-3 text-center">
+              Try Demo Accounts
+            </p>
+            <div className="grid grid-cols-2 gap-3">
+              <button
+                type="button"
+                onClick={() => fillDemoCredentials("admin")}
+                className="cursor-pointer px-3 py-2 bg-purple-50 border border-purple-200 
+                       rounded-md hover:bg-purple-100 transition text-sm"
+              >
+                <div className="font-medium text-purple-700">Admin</div>
+                <div className="text-xs text-gray-500 mt-1">Full access</div>
+              </button>
+              <button
+                type="button"
+                onClick={() => fillDemoCredentials("user")}
+                className="cursor-pointer px-3 py-2 bg-green-50 border border-green-200 
+                       rounded-md hover:bg-green-100 transition text-sm"
+              >
+                <div className="font-medium text-green-700">User</div>
+                <div className="text-xs text-gray-500 mt-1">Limited access</div>
+              </button>
+            </div>
+            <p className="text-xs text-gray-500 text-center mt-2">
+              Click to auto-fill credentials, then submit
+            </p>
+          </div>
         </div>
       </div>
     </>
