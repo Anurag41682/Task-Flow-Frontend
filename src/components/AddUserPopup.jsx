@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
+import { CheckIcon, UserIcon } from "./Icons";
 
 const baseURL = import.meta.env.VITE_BASE_URL;
 
@@ -44,50 +45,58 @@ const AddUser = ({ setAddUserPopup }) => {
 
   return (
     <>
-      <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50">
-        <div className="w-full max-w-md bg-white rounded-xl shadow-lg p-6">
+      <div className="modal-backdrop">
+        <div className="modal-panel">
           {/* Title */}
-          <h2 className="text-lg font-semibold text-gray-800 mb-4 text-center">
-            Create User
-          </h2>
+          <span className="absolute inset-x-0 top-0 h-1 bg-linear-to-r from-emerald-500 to-teal-500" />
+          <div className="mb-6 flex items-center gap-3">
+            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-linear-to-br from-emerald-500 to-teal-500 text-white shadow-lg">
+              <UserIcon className="h-5 w-5" />
+            </div>
+            <div>
+              <h2 className="text-lg font-bold text-slate-900">Create User</h2>
+              <p className="text-xs text-slate-500">
+                Invite a teammate to TaskFlow
+              </p>
+            </div>
+          </div>
 
           <form className="flex flex-col gap-4">
             {/* Name */}
-            <div className="flex flex-col gap-1">
-              <label className="text-sm text-gray-600">Name</label>
+            <div className="flex flex-col gap-1.5">
+              <label className="field-label">Name</label>
               <input
                 name="name"
+                placeholder="Jane Doe"
                 onChange={handleUserChange}
                 value={name}
-                className="border border-gray-300 rounded-md px-3 py-2 
-                     focus:outline-none focus:ring-2 focus:ring-green-400 
-                     transition"
+                className="field focus:border-emerald-400 focus:ring-emerald-500/15"
               />
             </div>
 
             {/* Email */}
-            <div className="flex flex-col gap-1">
-              <label className="text-sm text-gray-600">Email</label>
+            <div className="flex flex-col gap-1.5">
+              <label className="field-label">Email</label>
               <input
                 name="email"
+                placeholder="jane@company.com"
                 onChange={handleUserChange}
                 value={email}
-                className="border border-gray-300 rounded-md px-3 py-2 
-                     focus:outline-none focus:ring-2 focus:ring-green-400 
-                     transition"
+                className="field focus:border-emerald-400 focus:ring-emerald-500/15"
               />
             </div>
           </form>
 
           {/* Error Message */}
           {error && (
-            <div className="text-sm text-red-500">
+            <div className="alert-error mt-4 flex-col gap-1">
               {typeof error === "string" ? (
                 <p>{error}</p>
               ) : (
                 Object.entries(error).map(([key, value], index) => (
                   <p key={index}>
-                    <span className="font-medium">{key}</span>: {value}
+                    <span className="font-semibold capitalize">{key}</span>:{" "}
+                    {value}
                   </p>
                 ))
               )}
@@ -95,28 +104,21 @@ const AddUser = ({ setAddUserPopup }) => {
           )}
           {/* Success Message  */}
           {success && (
-            <p className="text-sm text-green-600 w-full text-left">{success}</p>
+            <p className="alert-success mt-4">
+              <CheckIcon className="mt-0.5 h-4 w-4 shrink-0" />
+              {success}
+            </p>
           )}
 
           {/* Actions */}
-          <div className="flex justify-end gap-3 mt-6">
+          <div className="mt-7 flex justify-end gap-3">
             {/* Cancel */}
-            <button
-              onClick={handleCloseUserPopup}
-              className="px-4 cursor-pointer py-2 rounded-md text-sm font-medium 
-                   bg-gray-200 text-gray-700 
-                   hover:bg-gray-300 transition"
-            >
+            <button onClick={handleCloseUserPopup} className="btn-ghost">
               Cancel
             </button>
 
             {/* Create */}
-            <button
-              onClick={handleCreateUser}
-              className="px-4 cursor-pointer py-2 rounded-md text-sm font-medium 
-                   bg-green-500 text-white 
-                   hover:bg-green-600 transition shadow-sm"
-            >
+            <button onClick={handleCreateUser} className="btn-success">
               Create
             </button>
           </div>

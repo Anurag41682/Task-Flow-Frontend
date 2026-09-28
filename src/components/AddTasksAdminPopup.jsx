@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
+import { AlertIcon, CheckIcon, EditIcon, PlusIcon } from "./Icons";
 
 const baseURL = import.meta.env.VITE_BASE_URL;
 
@@ -88,96 +89,115 @@ const AddTaskAdminPopup = ({
 
   return (
     <>
-      <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50">
-        <div className="w-full max-w-md bg-white rounded-xl shadow-lg p-6">
+      <div className="modal-backdrop">
+        <div className="modal-panel">
           {/* Dynamic Title */}
-          <h2 className="text-lg font-semibold text-gray-800 mb-4 text-center">
-            {isEdit ? "Edit Task" : "Assign Task"}
-          </h2>
+          <span className="absolute inset-x-0 top-0 h-1 bg-linear-to-r from-indigo-500 via-violet-500 to-fuchsia-500" />
+          <div className="mb-6 flex items-center gap-3">
+            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-linear-to-br from-indigo-500 via-violet-500 to-fuchsia-500 text-white shadow-lg">
+              {isEdit ? (
+                <EditIcon className="h-5 w-5" />
+              ) : (
+                <PlusIcon className="h-5 w-5" />
+              )}
+            </div>
+            <div>
+              <h2 className="text-lg font-bold text-slate-900">
+                {isEdit ? "Edit Task" : "Assign Task"}
+              </h2>
+              <p className="text-xs text-slate-500">
+                {isEdit
+                  ? "Update the task details"
+                  : "Create and assign a task to a teammate"}
+              </p>
+            </div>
+          </div>
 
           <form className="flex flex-col gap-4">
             {/* Title */}
-            <div className="flex flex-col gap-1">
-              <label className="text-sm text-gray-600">Title</label>
+            <div className="flex flex-col gap-1.5">
+              <label className="field-label">Title</label>
               <input
                 name="title"
+                placeholder="What needs to be done?"
                 value={title}
                 onChange={handleChange}
-                className="border border-gray-300 rounded-md px-3 py-2 
-                     focus:outline-none focus:ring-2 focus:ring-blue-400"
+                className="field"
               />
             </div>
 
             {/* Description */}
-            <div className="flex flex-col gap-1">
-              <label className="text-sm text-gray-600">Description</label>
+            <div className="flex flex-col gap-1.5">
+              <label className="field-label">Description</label>
               <textarea
                 name="description"
+                placeholder="Add a few details..."
                 value={description}
                 onChange={handleChange}
                 rows={3}
-                className="border border-gray-300 rounded-md px-3 py-2 
-                     focus:outline-none focus:ring-2 focus:ring-blue-400 resize-none"
+                className="field resize-none"
               />
             </div>
 
-            {/* Due Date (already good 👍) */}
-            <div className="flex flex-col gap-1">
-              <label className="text-sm text-gray-600">Due Date</label>
-              <input
-                type="date"
-                name="dueDate"
-                value={dueDate}
-                onChange={handleChange}
-                className="border border-gray-300 rounded-md px-3 py-2 
-                     focus:outline-none focus:ring-2 focus:ring-blue-400"
-              />
-            </div>
+            <div className="grid gap-4 sm:grid-cols-2">
+              {/* Due Date */}
+              <div className="flex flex-col gap-1.5">
+                <label className="field-label">Due Date</label>
+                <input
+                  type="date"
+                  name="dueDate"
+                  value={dueDate}
+                  onChange={handleChange}
+                  className="field cursor-pointer"
+                />
+              </div>
 
-            {/* User Dropdown */}
-            <div className="flex flex-col gap-1">
-              <label className="text-sm text-gray-600">Assign To</label>
-              <select
-                name="userId"
-                value={taskUserId}
-                onChange={handleChange}
-                className="border border-gray-300 rounded-md px-3 py-2 
-                     focus:outline-none focus:ring-2 focus:ring-blue-400"
-              >
-                <option value="">Select User</option>
-                {users.map((user) => (
-                  <option key={user.id} value={user.id}>
-                    {user.name} ({user.email})
-                  </option>
-                ))}
-              </select>
+              {/* User Dropdown */}
+              <div className="flex flex-col gap-1.5">
+                <label className="field-label">Assign To</label>
+                <select
+                  name="userId"
+                  value={taskUserId}
+                  onChange={handleChange}
+                  className="field cursor-pointer"
+                >
+                  <option value="">Select User</option>
+                  {users.map((user) => (
+                    <option key={user.id} value={user.id}>
+                      {user.name} ({user.email})
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
           </form>
 
           {/* Messages */}
-          {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
-          {success && <p className="text-green-600 text-sm mt-2">{success}</p>}
+          {error && (
+            <p className="alert-error mt-4">
+              <AlertIcon className="mt-0.5 h-4 w-4 shrink-0" />
+              {error}
+            </p>
+          )}
+          {success && (
+            <p className="alert-success mt-4">
+              <CheckIcon className="mt-0.5 h-4 w-4 shrink-0" />
+              {success}
+            </p>
+          )}
 
           {/* Actions */}
-          <div className="flex justify-end gap-3 mt-6">
-            <button
-              onClick={handleClose}
-              className="px-4 py-2 rounded-md text-sm font-medium 
-                   bg-gray-200 cursor-pointer text-gray-700 hover:bg-gray-300 transition"
-            >
+          <div className="mt-7 flex justify-end gap-3">
+            <button onClick={handleClose} className="btn-ghost">
               Cancel
             </button>
 
             <button
               onClick={handleSubmit}
               disabled={success}
-              className={`px-4 py-2 rounded-md text-sm font-medium text-white
-        ${
-          success
-            ? "bg-blue-300 cursor-not-allowed"
-            : "bg-blue-500 cursor-pointer hover:bg-blue-600"
-        }`}
+              className="btn-primary min-w-32"
             >
+              {success && <CheckIcon className="h-4 w-4" />}
               {success ? "Saved" : isEdit ? "Update Task" : "Create Task"}
             </button>
           </div>
